@@ -15,7 +15,7 @@ form.addEventListener("submit", async (e) => {
     try {
 
         const response = await fetch(
-            "http://localhost:5000/contact",
+    "/contact",
             {
                 method: "POST",
                 headers: {
@@ -37,4 +37,5 @@ form.addEventListener("submit", async (e) => {
         successMessage.textContent =
             "Failed to send message";
     }
+    
 });
