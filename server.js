@@ -83,7 +83,9 @@ res.status(200).json({
 
     } catch (error) {
 
-        console.error(error);
+        console.error("Email Error:", error);
+        console.error("EMAIL_USER:", process.env.EMAIL_USER);
+        console.error("EMAIL_PASS exists:", !!process.env.EMAIL_PASS);
 
         res.status(500).json({
             success: false,
