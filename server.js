@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
 
 
 
-app.post("/contact", async (req, res) => {
+/*app.post("/contact", async (req, res) => {
     try {
 
         const { name, email, message } = req.body;
@@ -35,7 +35,15 @@ app.post("/contact", async (req, res) => {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS
             }
-        });
+        }); */
+app.post("/contact", async (req, res) => {
+    console.log("Contact request received");
+
+    res.status(200).json({
+        success: true,
+        message: "Backend working successfully"
+    });
+});
 
        // Email sent to you
 await transporter.sendMail({
