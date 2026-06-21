@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-const nodemailer = require("nodemailer");
 const path = require("path");
 require("dotenv").config();
 
@@ -27,60 +26,23 @@ app.post("/contact", async (req, res) => {
             });
         }
 
-        console.log("EMAIL_USER:", process.env.EMAIL_USER);
-        console.log("EMAIL_PASS exists:", !!process.env.EMAIL_PASS);
+        console.log("Form Received");
+        console.log("Name:", name);
+        console.log("Email:", email);
+        console.log("Message:", message);
 
-        const transporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS
-            }
-        });
-
-        // Email to you
-        await transporter.sendMail({
-            from: process.env.EMAIL_USER,
-            to: process.env.EMAIL_USER,
-            subject: `New Contact Form Message from ${name}`,
-            html: `
-                <h2>New Contact Request</h2>
-                <p><strong>Name:</strong> ${name}</p>
-                <p><strong>Email:</strong> ${email}</p>
-                <p><strong>Message:</strong></p>
-                <p>${message}</p>
-            `
-        });
-
-        // Auto reply to customer
-        await transporter.sendMail({
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: "Thank you for contacting us",
-            html: `
-                <h2>Thank You</h2>
-                <p>Hello ${name},</p>
-                <p>We have received your message successfully.</p>
-                <p>Our team will get back to you as soon as possible.</p>
-                <br>
-                <p>Regards,</p>
-                <p>Your Company Name</p>
-            `
-        });
-
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
-            message: "Message sent successfully"
+            message: "Form submitted successfully!"
         });
 
     } catch (error) {
 
-        console.error("FULL EMAIL ERROR:");
         console.error(error);
 
         res.status(500).json({
             success: false,
-            message: error.message
+            message: "Server Error"
         });
     }
 });
