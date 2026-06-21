@@ -31,7 +31,7 @@ form.addEventListener("submit", async (e) => {
         form.reset();
 
     } catch (error) {
-        console.error("Frontend Error:", error);
+        console.error(error);
         successMessage.textContent =
             "Failed to send message: " + error.message;
     }

@@ -17,6 +17,7 @@ app.get("/", (req, res) => {
 
 app.post("/contact", async (req, res) => {
     try {
+
         const { name, email, message } = req.body;
 
         if (!name || !email || !message) {
@@ -30,17 +31,12 @@ app.post("/contact", async (req, res) => {
         console.log("EMAIL_PASS exists:", !!process.env.EMAIL_PASS);
 
         const transporter = nodemailer.createTransport({
-            host: "smtp.gmail.com",
-            port: 587,
-            secure: false,
+            service: "gmail",
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS
             }
         });
-
-        await transporter.verify();
-        console.log("SMTP connection successful");
 
         // Email to you
         await transporter.sendMail({
@@ -56,7 +52,7 @@ app.post("/contact", async (req, res) => {
             `
         });
 
-        // Auto reply
+        // Auto reply to customer
         await transporter.sendMail({
             from: process.env.EMAIL_USER,
             to: email,
@@ -68,7 +64,7 @@ app.post("/contact", async (req, res) => {
                 <p>Our team will get back to you as soon as possible.</p>
                 <br>
                 <p>Regards,</p>
-                <p>TechNova Solutions</p>
+                <p>Your Company Name</p>
             `
         });
 
@@ -78,9 +74,9 @@ app.post("/contact", async (req, res) => {
         });
 
     } catch (error) {
+
         console.error("FULL EMAIL ERROR:");
         console.error(error);
-        console.error("MESSAGE:", error.message);
 
         res.status(500).json({
             success: false,
