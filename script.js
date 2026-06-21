@@ -1,41 +1,41 @@
 const form = document.getElementById("contactForm");
-const successMessage = document.getElementById("successMessage");
+const successMessage =
+document.getElementById("successMessage");
 
-form.addEventListener("submit", async function (e) {
+form.addEventListener("submit", async (e) => {
+
     e.preventDefault();
 
-    successMessage.textContent = "Sending...";
-
-    const formData = new FormData(form);
-
-    formData.append(
-        "access_key",
-        "2033afa3-6e39-485f-9d0d-1018e17e8bdd"
-    );
+    const data = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        message: document.getElementById("message").value
+    };
 
     try {
+
         const response = await fetch(
-            "https://api.web3forms.com/submit",
+            "http://localhost:5000/contact",
             {
                 method: "POST",
-                body: formData
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
             }
         );
 
         const result = await response.json();
 
-        if (result.success) {
-            successMessage.textContent =
-                "Message sent successfully!";
-            form.reset();
-        } else {
-            successMessage.textContent =
-                "Failed to send message";
-        }
+        successMessage.textContent =
+            result.message;
+
+        form.reset();
 
     } catch (error) {
-        console.error(error);
+
         successMessage.textContent =
-            "Error sending message";
+            "Failed to send message";
     }
+    
 });
