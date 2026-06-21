@@ -1,21 +1,12 @@
 const express = require("express");
 const cors = require("cors");
 const nodemailer = require("nodemailer");
-const path = require("path");
 require("dotenv").config();
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-
-app.use(express.static(__dirname));
-
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "index.html"));
-});
-
-
 
 app.post("/contact", async (req, res) => {
     try {
@@ -29,22 +20,13 @@ app.post("/contact", async (req, res) => {
             });
         }
 
-      /*  const transporter = nodemailer.createTransport({
+        const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS
             }
-        });*/
-        const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    }
-});
+        });
 
        // Email sent to you
 await transporter.sendMail({
@@ -92,9 +74,7 @@ res.status(200).json({
 
     } catch (error) {
 
-        console.error("Email Error:", error);
-        console.error("EMAIL_USER:", process.env.EMAIL_USER);
-        console.error("EMAIL_PASS exists:", !!process.env.EMAIL_PASS);
+        console.error(error);
 
         res.status(500).json({
             success: false,
